@@ -50,3 +50,10 @@ async def query_stream(user_input: str):
         return StreamingResponse(generator, media_type="application/x-ndjson")
     except Exception as e:
         return {"status": -1, "message": str(e), "data": {}}
+
+
+
+if __name__ == "__main__":
+    import uvicorn
+    # Get the frontend UI at "http://localhost:8000/ui" endpint
+    uvicorn.run(app, host="0.0.0.0", port=8000)
