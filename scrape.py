@@ -4,7 +4,7 @@ import uuid
 import urllib.parse
 import re
 from bs4 import BeautifulSoup
-from playwright.async_api import async_playwright
+#from playwright.async_api import async_playwright
 
 
 class ScarapeANDSave:
@@ -14,29 +14,28 @@ class ScarapeANDSave:
 
     # Fetch url using playwright
     async def fetch_url(self, url):
-        # Try Playwright first
-        try:
-            async with async_playwright() as p:
-                browser = await p.chromium.launch(headless=True)
-                page = await browser.new_page()
-                try:
-                    await page.goto(url, wait_until="networkidle")
-                    await page.evaluate("window.scrollTo(0, document.body.scrollHeight)") 
-                    await page.wait_for_timeout(30000) 
-                    await page.wait_for_selector("body")
-                    content = await page.content()
-                    soup = BeautifulSoup(content, "html.parser")
-                    return {"status": 0, "data": soup, "meassage": ""}
-                except Exception as e:
-                    error_msg = str(e)
-                finally:
-                    await browser.close()
-        except Exception as e:
-            error_msg = str(e)
+        # # Try Playwright first
+        # try:
+        #     async with async_playwright() as p:
+        #         browser = await p.chromium.launch(headless=True)
+        #         page = await browser.new_page()
+        #         try:
+        #             await page.goto(url, wait_until="networkidle")
+        #             await page.evaluate("window.scrollTo(0, document.body.scrollHeight)") 
+        #             await page.wait_for_timeout(30000) 
+        #             await page.wait_for_selector("body")
+        #             content = await page.content()
+        #             soup = BeautifulSoup(content, "html.parser")
+        #             return {"status": 0, "data": soup, "meassage": ""}
+        #         except Exception as e:
+        #             error_msg = str(e)
+        #         finally:
+        #             await browser.close()
+        # except Exception as e:
+        #     error_msg = str(e)
 
         # Fallback to aiohttp if Playwright fails
         try:
-            print(f"Playwright failed, trying aiohttp: {error_msg}")
             headers = {'User-Agent': 'Mozilla/5.0'}
             async with aiohttp.ClientSession() as session:
                 async with session.get(url, headers=headers, ssl=False) as response:

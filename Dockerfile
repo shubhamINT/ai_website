@@ -7,10 +7,8 @@ WORKDIR /app
 COPY requirements.txt  requirements.txt
 RUN pip install --user -r requirements.txt
 
-# Add this to install browser binaries!
-RUN python -m playwright install --with-deps
-
 ENV PATH=/root/.local/bin:$PATH
+
 
 # ---------- STAGE 2: Production stage ----------
 FROM python:3.12-slim AS production
